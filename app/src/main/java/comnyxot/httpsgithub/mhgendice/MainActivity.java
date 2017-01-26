@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        imgArray_weapon = new int[14];
+        imgArray_weapon = new int[15];
         imgArray_weapon[0] = R.drawable.greatsword;
         imgArray_weapon[1] = R.drawable.longsword;
         imgArray_weapon[2] = R.drawable.swordandshield;
@@ -40,8 +40,9 @@ public class MainActivity extends AppCompatActivity {
         imgArray_weapon[11] = R.drawable.heavybowgun;
         imgArray_weapon[12] = R.drawable.insectglaive;
         imgArray_weapon[13] = R.drawable.bow;
+        imgArray_weapon[14] = R.drawable.prowler;
 
-        nameArray_weapon = new String[14];
+        nameArray_weapon = new String[15];
         nameArray_weapon[0] = "GreatSword";
         nameArray_weapon[1] = "Longsword";
         nameArray_weapon[2] = "Sword and Shield";
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         nameArray_weapon[11] = "Heavy Bowgun";
         nameArray_weapon[12] = "Insect Glaive";
         nameArray_weapon[13] = "Bow";
+        nameArray_weapon[14] = "Prowler";
 
         nameArray_style = new String[4];
         nameArray_style[0] = "Guild Style";
@@ -63,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
         nameArray_style[2] = "Aerial Style";
         nameArray_style[3] = "Adept Style";
 
-        imgArray_monster = new int[67];
-        nameArray_monster = new String[67];
+        imgArray_monster = new int[70];
+        nameArray_monster = new String[70];
         imgArray_monster[0] = R.drawable.agnaktor;
         nameArray_monster[0] = "Agnaktor";
         imgArray_monster[1] = R.drawable.akantor;
@@ -199,13 +201,19 @@ public class MainActivity extends AppCompatActivity {
         nameArray_monster[65] = "Yian Kut-ku";
         imgArray_monster[66] = R.drawable.zamtrios;
         nameArray_monster[66] = "Zamtrios";
+        imgArray_weapon[67] = R.drawable.gendrome;
+        nameArray_monster[67] = "Gendrome";
+        imgArray_monster[68] = R.drawable.shogunceanataur;
+        nameArray_monster[68] = "Shogun Ceanataur";
+        imgArray_monster[69] = R.drawable.ukanlos;
+        nameArray_monster[69] = "Ukandlos";
     }
 
     public void get_weapon(View v) {
         img_weapon = (ImageView) findViewById(R.id.img_weapon);
         name_weapon = (TextView) findViewById(R.id.name_weapon);
         Random r = new Random();
-        int i = r.nextInt(14 - 0) + 0;
+        int i = r.nextInt(15 - 0) + 0;
         img_weapon.setImageResource(imgArray_weapon[i]);
         name_weapon.setBackgroundColor(Color.WHITE);
         name_weapon.setTextColor(Color.BLACK);
@@ -231,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
         img_monster = (ImageView) findViewById(R.id.img_monster);
         name_monster = (TextView) findViewById(R.id.name_monster);
         Random r = new Random();
-        int i = r.nextInt(67 - 0) + 0;
+        int i = r.nextInt(70 - 0) + 0;
         img_monster.setImageResource(imgArray_monster[i]);
         name_monster.setBackgroundColor(Color.WHITE);
         name_monster.setTextColor(Color.BLACK);
