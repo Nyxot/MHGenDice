@@ -1,13 +1,30 @@
 package comnyxot.httpsgithub.mhgendice;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Date;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +41,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},0);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
 
         imgArray_weapon = new int[15];
         imgArray_weapon[0] = R.drawable.greatsword;
@@ -61,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
         nameArray_style = new String[4];
         nameArray_style[0] = "Guild Style";
-        nameArray_style[1] = "Stiker Style";
+        nameArray_style[1] = "Striker Style";
         nameArray_style[2] = "Aerial Style";
         nameArray_style[3] = "Adept Style";
 
@@ -201,12 +244,63 @@ public class MainActivity extends AppCompatActivity {
         nameArray_monster[65] = "Yian Kut-ku";
         imgArray_monster[66] = R.drawable.zamtrios;
         nameArray_monster[66] = "Zamtrios";
-        imgArray_weapon[67] = R.drawable.gendrome;
+        imgArray_monster[67] = R.drawable.gendrome;
         nameArray_monster[67] = "Gendrome";
         imgArray_monster[68] = R.drawable.shogunceanataur;
         nameArray_monster[68] = "Shogun Ceanataur";
         imgArray_monster[69] = R.drawable.ukanlos;
-        nameArray_monster[69] = "Ukandlos";
+        nameArray_monster[69] = "Ukanlos";
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menuopciones, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.btn_foto) {
+
+            Date now = new Date();
+            android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
+
+            try {
+                // image naming and path  to include sd card  appending name you choose for file
+                String mPath = Environment.getExternalStorageDirectory().toString() + "/PICTURES/Screenshots/" + now + ".jpg";
+
+                // create bitmap screen capture
+                View v1 = getWindow().getDecorView().getRootView();
+                v1.setDrawingCacheEnabled(true);
+                Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
+                v1.setDrawingCacheEnabled(false);
+                File imageFile = new File(mPath);
+                FileOutputStream outputStream = new FileOutputStream(imageFile);
+                int quality = 100;
+                bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+                outputStream.flush();
+                outputStream.close();
+
+
+                MediaScannerConnection.scanFile(this,
+                        new String[]{imageFile.toString()}, null,
+                        new MediaScannerConnection.OnScanCompletedListener() {
+                            public void onScanCompleted(String path, Uri uri) {
+                                Log.i("ExternalStorage", "Scanned " + path + ":");
+                                Log.i("ExternalStorage", "-> uri=" + uri);
+                            }
+                        });
+                Toast.makeText(this, "Screenshot saved", Toast.LENGTH_LONG).show();
+
+            } catch (Throwable e) {
+                // Several error may come out with file handling or OOM
+                e.printStackTrace();
+            }
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void get_weapon(View v) {
